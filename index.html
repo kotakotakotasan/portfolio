@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--
+  実装メモ（二次選考プレゼン用の設計判断ログ）
+
+  ・外部依存ゼロ：CDN/Webフォント/外部JSを一切使わない。file://で直接開いても
+    完全に動く。唯一の例外はYouTube埋め込みで、これはfacadeパターンにより
+    ユーザーがボタンを押すまで読み込まない（assets/js/main.js参照）。
+  ・色は5色固定（paper/ink/night/alert/insight）。night→alertの色の推移は
+    本人の演出手法である「感情の起伏」をサイト構造に転用したもの。
+  ・フォントはシステムフォントのみ（Windows実機でのフォント破綻を避けるため。
+    詳細はassets/css/style.cssのコメントを参照）。
+  ・各作品セクションは「狙い→打ち手→反応→学び」の4段固定。学びだけ全幅の
+    色帯にして視覚的に最大化している（評価基準で最重要と明示されているため）。
+  ・セクション3（起業体験）とセクション4（学校＋地方）の原稿は本人記入待ち。
+    5は原稿が届くまでHTMLコメントとして非表示にしてある（content.mdの指示）。
+-->
+<title>影響を与える側とメディア｜岡田琥太郎 オンラインポートフォリオ</title>
+<meta name="description" content="メディアは人に影響を与える力がある。アテンションエコノミーの世界に直に触れてきたからこそ、メディアの今後のあり方と発信者としての責任について興味を持った。岡田琥太郎のオンラインポートフォリオ。">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <span>影響を与える側とメディア</span>
+  <span class="site-header__author">岡田琥太郎</span>
+</header>
+
+<main>
+
+  <!-- ============ 冒頭 — 問い（唯一の大胆要素、番号なし） ============ -->
+  <section class="hero" id="section-hero" aria-labelledby="hero-heading">
+    <p class="hero__eyebrow">この作品群を貫く問い</p>
+    <!--
+      本人フィードバックにより修正：CLAUDE.mdの原案（狭まる、という問題提起の
+      枠組み）は、本文・活動が一貫して「広げたい」というポジティブな方向を
+      向いているのとずれていたため、同じ二軸（若者の可能性／メディアの役割）
+      のまま前向きな言い方に変更した。
+    -->
+    <h1 id="hero-heading" class="hero__question">
+      <em>若者の可能性</em>を広げたい。<br>
+      そのために、メディアはどのようにあるべきなのか。
+    </h1>
+
+    <div class="hero__lede">
+      <!-- 以下、content.md「1. 冒頭 — 問い」を本人の文章のまま掲載。個人因子・環境因子の説明は本人が最終確認中。 -->
+      <p>私自身は不登校になってしまった経験や、学校での活動で挫折してしまった経験がある。そんな時に私が行動するきっかけを作ってくれたのが「ドラえもん」や「ノンタイトル」などの映像作品だった。</p>
+      <p>ドラえもんの映画は感動や困難を乗り越える姿を見せてくれ、私を涙させ、元気を取り戻すきっかけとなった。毎回、道具と場面が違うだけで基本の構成は同じなのに飽きさせない設計や、時には意外性のあるオチで裏切ってくる構成は、今でも無意識に私自身が物語を作る際に参考にしている人生の教科書だ。またノンタイトルは、起業初心者の人たちが知識も少ない状態でビジネスを作っていく番組であり、困難を乗り越える過程、具体的な経路が見えることにより、自分でもできそうという自己効力感を得ることができた。喧嘩しながらもチームをまとめていく姿やプレゼンテーションは、自身の学校での活動にも活かされた。</p>
+      <p>選択肢が見えない状態、どうすればいいかわからない状態は、本当に苦しい。人は個人因子と環境因子の二つから影響を受けると言われている。環境因子へのアプローチにはカウンセリングや病院などいくつか方法があるが、どれも大衆向けとは言えない。私自身は、映像によって一歩を踏み出す勇気を得てきた。だからこそ映像は人にポジティブな影響を与えられるし、メディアはそれを広く届けることができると確信している。</p>
+    </div>
+  </section>
+
+  <!-- ============ アバウトミー ============
+       content.mdの7セクションには含まれない追加ブロック。番号付き作品
+       セクションと区別するため、大きなナンバーは付けず控えめな扱いにする。
+       写真は任意（無くても崩れないようdiagram-slotの仕組みを流用）。
+       参考ポートフォリオ（梶原みゆ氏）のプロフィールページにあった
+       「写真＋ラベル付きの一覧表」という構成を、色・書体は使わず
+       構造だけ取り入れている（見やすさ・スキャンしやすさが目的）。 -->
+  <section class="about" aria-labelledby="about-heading">
+    <div class="about__inner">
+      <div class="about__photo-block">
+        <div class="diagram-slot about__photo" data-diagram="profile">
+          <img alt="岡田琥太郎のプロフィール写真" hidden>
+        </div>
+        <p class="diagram-slot__caption about__photo-caption">ラウンドワンコラボ時</p>
+      </div>
+      <div class="about__body">
+        <p class="about__eyebrow" id="about-heading">About Me</p>
+        <p class="about__name">岡田琥太郎</p>
+
+        <dl class="profile-table">
+          <div class="profile-table__row">
+            <dt>ポリシー</dt>
+            <dd>映像制作やプレゼンテーションなど、人の注目を集め、何かを伝える活動に数多く取り組んできました。だからこそ、誰にも見られず、記憶にも残らず、何も届けられない作品にはしたくありません。見てもらうからには、見ている時間そのものを楽しんでもらい、見終わった後にも感情やメッセージが残るものをつくる。それが、私が発信に向き合ううえで大切にしている姿勢です。</dd>
+          </div>
+          <div class="profile-table__row">
+            <dt>活動</dt>
+            <dd>
+              <ul class="profile-table__list">
+                <li><strong>400万人へ届ける映像制作</strong>登録者数400万人を超える子ども向けYouTubeチャンネルで、企画・演出・出演を中心に100本以上の映像制作に携わる。</li>
+                <li><strong>50回以上のプレゼン経験</strong>学校内外の活動やコンテスト、インターンで、50回以上のスライド制作とプレゼンテーションを経験。</li>
+                <li><strong>ゼロから始める映像制作</strong>SNSチャンネルの立ち上げや地域での活動を通じ、企画から撮影、編集、投稿まで一貫して映像を制作。</li>
+              </ul>
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 概要（目次） ============ -->
+  <nav class="overview" aria-labelledby="overview-heading">
+    <p class="overview__title" id="overview-heading">この先にあるもの</p>
+    <ol class="overview__list">
+      <li class="overview__item">
+        <a href="#section-1">
+          <span class="overview__num">1</span>
+          <span>
+            <span class="overview__label">こたみのチャンネル</span>
+            <span class="overview__note">共同制作。企画・構成・演出・出演として参加した2本の動画</span>
+          </span>
+        </a>
+      </li>
+      <li class="overview__item">
+        <a href="#section-2">
+          <span class="overview__num">2</span>
+          <span>
+            <span class="overview__label">自らチャンネルを開設</span>
+            <span class="overview__note">3プラットフォーム・1ヶ月12本の検証と、メインチャンネルへの還元</span>
+          </span>
+        </a>
+      </li>
+      <li class="overview__item">
+        <a href="#section-3">
+          <span class="overview__num">3</span>
+          <span>
+            <span class="overview__label">起業体験プログラム</span>
+            <span class="overview__note">StartUpBase U18／最優秀賞・オーディエンス賞</span>
+          </span>
+        </a>
+      </li>
+      <li class="overview__item">
+        <a href="#section-4">
+          <span class="overview__num">4</span>
+          <span>
+            <span class="overview__label">学校での活動＋地方での制作</span>
+            <span class="overview__note">プロジェクトNと、伊予市・厚沢部町での映像制作</span>
+          </span>
+        </a>
+      </li>
+      <li class="overview__item">
+        <a href="#section-5">
+          <span class="overview__num">5</span>
+          <span>
+            <span class="overview__label">今後の展望</span>
+          </span>
+        </a>
+      </li>
+      <li class="overview__item">
+        <a href="#section-6">
+          <span class="overview__num">6</span>
+          <span>
+            <span class="overview__label">参考にしたポートフォリオ</span>
+          </span>
+        </a>
+      </li>
+    </ol>
+  </nav>
+
+  <!-- ============ 1. こたみのチャンネル ============ -->
+  <section class="section" id="section-1" aria-labelledby="s2-heading">
+    <div class="section__head">
+      <span class="section__num" aria-hidden="true">1</span>
+      <div>
+        <h2 class="section__title" id="s2-heading">こたみのチャンネル</h2>
+      </div>
+    </div>
+
+    <div class="section__body section__body--wide">
+      <!--
+        梶原みゆ氏の「写真＋説明」の組み方を導入部に採用。写真は妹と写っている
+        超十代の別カット（記入待ち。届き次第 assets/img/section2-chotandai.*
+        として置けば自動的に表示される）。
+      -->
+      <div class="intro">
+        <div class="diagram-slot intro__photo" data-diagram="section2-chotandai">
+          <img alt="超十代イベント出演時の写真" hidden>
+        </div>
+        <div class="intro__text">
+          <p>登録者477万人のチャンネル「こたみの」に、企画・構成・演出・出演として運営に携わる</p>
+        </div>
+      </div>
+
+      <!-- 表記の注意：共同制作であり自分単独のチャンネルではないことを明記（なりすまし判定の回避） -->
+      <span class="tag">共同制作</span>
+      <p>
+        こたみのチャンネルは共同制作のチャンネルです。2019年から出演し、2023年からは企画・構成・演出・出演を担当する運営として携わっている。
+      </p>
+
+      <div class="stat-row">
+        <div>
+          <span class="stat__value">477万人</span>
+          <span class="stat__label">登録者数</span>
+        </div>
+        <div>
+          <span class="stat__value">31億7000万回</span>
+          <span class="stat__label">総再生回数</span>
+        </div>
+      </div>
+
+      <!-- ---- 動画1 ---- -->
+      <article>
+        <h3 class="subhead">動画1 — ホラー鬼ごっこかくれんぼ</h3>
+
+        <div class="video-facade"
+             data-youtube-id="Jyh0OtC7O5g"
+             data-img-base="diagram-horror"
+             data-title="[怖い話]ホラー鬼ごっこかくれんぼ🌙inふしぎなホテル！みのはこたから逃げ切れるか？寸劇">
+          <img class="video-facade__img" alt="動画1の感情設計図（プレースホルダ）" hidden>
+          <div class="video-facade__fallback" hidden>
+            <p class="video-facade__fallback-title">[怖い話]ホラー鬼ごっこかくれんぼ🌙inふしぎなホテル！みのはこたから逃げ切れるか？寸劇</p>
+            <p class="video-facade__fallback-stat">36万回再生（2026年9月9日現在）</p>
+          </div>
+          <button class="video-facade__play" type="button" aria-label="動画1を再生する">再生する</button>
+        </div>
+        <p class="video-caption">36万回再生（2026年9月9日現在）</p>
+
+        <div class="stage">
+          <p class="stage__label">狙い</p>
+          <p>いかにして視聴者をホラーの世界に引き込むか、怖がらせるか、見終わった後も余韻を残すか。</p>
+        </div>
+        <div class="stage">
+          <p class="stage__label">打ち手</p>
+          <p>エレベーターで逃げ切る→安心→だんだん上昇していく→恐怖→鬼が待ち構えている→びっくり、という感情を揺さぶる演出。隠れている時に鬼が近くを探し、見つかりそうになるドキドキ。最後は解決するのではなく、また別の鬼が現れて襲われるのかという余韻で終わる構成にした。</p>
+        </div>
+        <div class="stage stage--reaction">
+          <p class="stage__label">反応</p>
+          <p>36万再生。コメント欄には「こわいよるねむれないどうしようえええん」「もうすぐ3歳、ハマりまくって1日10回はみました」「続編求む」といった声。</p>
+        </div>
+        <div class="stage stage--insight">
+          <p class="stage__label">学び</p>
+          <p>今まで子供向けだからと手を出せなかったホラー系の企画だったが、子供たちからすると何度も見たいという評価だった。映像はマイルドであるとはいえ、自身の価値判断で決めつけず、一度制作してみることの重要性を知った。また、リプレイ回数が最も多いのは隠れている時に鬼に見つけられそうになるシーンであり、現実で心が動くシーンは人気であることがわかった。</p>
+        </div>
+      </article>
+
+      <!-- ---- 動画2 ---- -->
+      <article>
+        <h3 class="subhead">動画2 — リアルピースコラボ</h3>
+
+        <!-- 【必ず表示】評価基準の注意事項に基づくオマージュ明記。読み飛ばされないよう作品説明の一部として本文中に配置。 -->
+        <p class="notice">
+          <strong>オマージュについて：</strong>この動画は、当時流行していた作品『イカゲーム』をオマージュした企画です。
+        </p>
+
+        <div class="video-facade"
+             data-youtube-id="Ejmad2hYcOk"
+             data-img-base="diagram-collab"
+             data-title="たすけてリアルピース！イカゲームごっこを力を合わせてクリアせよ！リアルピースコラボ">
+          <img class="video-facade__img" alt="動画2の脱落順と感情移入の設計図（プレースホルダ）" hidden>
+          <div class="video-facade__fallback" hidden>
+            <p class="video-facade__fallback-title">たすけてリアルピース！イカゲームごっこを力を合わせてクリアせよ！リアルピースコラボ</p>
+            <p class="video-facade__fallback-stat">496万回再生</p>
+          </div>
+          <button class="video-facade__play" type="button" aria-label="動画2を再生する">再生する</button>
+        </div>
+        <p class="video-caption">496万回再生</p>
+
+        <div class="stage">
+          <p class="stage__label">狙い</p>
+          <p>脱落式のデスゲーム動画において、アイドルであるリアルピースの格を落とさない脱落の設計を心がけた。主人公がまさかの失敗をしてしまうという意外性で感情を揺さぶること、NGシーンを入れることで親しみやすさを上げることも意識した。</p>
+        </div>
+        <div class="stage">
+          <p class="stage__label">打ち手</p>
+          <p>全員が成功できる設計にしたうえで、悪者に妨害されて失敗してしまうという見せ方にした。これにより悪者にヘイトが集まり、味方側に感情移入が起きる。コラボ相手の格も落とさない。主人公が失敗してしまうが、最後にコラボ相手が守ってくれることで助かるという流れにし、コラボ相手を立てつつストーリー進行に支障が出ない設計にした。最後にNGシーンを入れ、相手と自分たちの親近感を高めた。</p>
+        </div>
+        <div class="stage stage--reaction">
+          <p class="stage__label">反応</p>
+          <p>496万再生。コメント欄には「かばっているのがかっこいい」「リヤルピースがんばれ」「ずる〜」「コラボ最高」といった声。</p>
+        </div>
+        <div class="stage stage--insight">
+          <p class="stage__label">学び</p>
+          <p>コメント欄で意外にも最も需要が高かったのがNGシーンだった。動画の緊迫感とは違う普段の様子とのギャップが見られることが嬉しいのだと感じた。普段見せている姿や映像とのギャップが、親密感につながっていると考えた。また、コラボ相手に対してがっかりしている人が少なく、格を落とさず悪役にヘイトを集める設計の重要性を実感した。</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ 2. 自らチャンネルを開設 ============ -->
+  <section class="section" id="section-2" aria-labelledby="s3-heading">
+    <div class="section__head">
+      <span class="section__num" aria-hidden="true">2</span>
+      <div>
+        <h2 class="section__title" id="s3-heading">自らチャンネルを開設</h2>
+        <p class="section__lead">自分でチャンネルを立ち上げて検証し、そこで得た気づきを本業に活かすまでの記録</p>
+      </div>
+    </div>
+
+    <div class="section__body section__body--wide">
+      <p>こたみのチャンネルは寸劇を軸としており、流行りの企画を動画で行うことがあまりなかった。そこで、これまでの学びと流行の動画を組み合わせた際の反応を、自ら検証してみたかった。また、超十代というイベントステージにゲスト出演することが決まり、短期間で知名度を伸ばせないかを検証するために開設した。</p>
+
+      <div class="diagram-slot" data-diagram="section3-chotandai">
+        <img alt="超十代イベント出演時の写真" hidden>
+        <p class="diagram-slot__caption">超十代イベント出演時</p>
+      </div>
+
+      <!--
+        仮説→実験→学び→還元の工程図。本人自身の演出手法（感情設計）を
+        サイト構造に転用したもので、この経験を実績の羅列に埋もれさせず
+        記憶に残る位置に置くための装置。
+      -->
+      <div class="loop">
+        <div class="loop__node">
+          <p class="loop__label">仮説</p>
+          <p class="loop__text">こたみのチャンネルの寸劇・オチの学びと、流行の動画を組み合わせたら反応はどうなるか。超十代への出演も見据え、短期間で知名度を伸ばせるかを検証したい。</p>
+        </div>
+        <div class="loop__node">
+          <p class="loop__label">実験</p>
+          <p class="loop__text">TikTok / Instagram / YouTubeの3プラットフォームに、1ヶ月で12本を投稿。</p>
+        </div>
+        <div class="loop__node">
+          <p class="loop__label">学び</p>
+          <p class="loop__text">こたみのチャンネル独自の寸劇・オチ・感情を動かす設計は、流行の模倣より新鮮味があり見られやすい。ただし流行企画はコアなファンがつきにくく、長期的な親密度には向かない。</p>
+        </div>
+        <div class="loop__node">
+          <p class="loop__label">還元</p>
+          <p class="loop__text">恐怖寸劇の設計とオチを、こたみのチャンネルの「学校」×「かくれんぼ」企画に組み込み、444万回再生を記録。</p>
+        </div>
+      </div>
+
+      <!-- 自ら開設したチャンネル「コッター」の実在証拠として、チャンネルページの
+           スクリーンショットを掲載。本人が権利を持つ自分のチャンネルのためモザイク無し。 -->
+      <div class="diagram-slot" data-diagram="section3-channel">
+        <img alt="自ら開設したチャンネル「コッター」のページ" hidden>
+        <p class="diagram-slot__caption">自ら開設したチャンネル「コッター」</p>
+      </div>
+
+      <h3 class="subhead">検証の規模</h3>
+      <p>3つのプラットフォーム（TikTok / Instagram / YouTube）に、1ヶ月で12本を投稿した。</p>
+
+      <h3 class="subhead">プラットフォームごとの違い</h3>
+
+      <div class="diagram-slot" data-diagram="diagram-platform">
+        <img alt="プラットフォーム別の反応比較図" hidden>
+        <p class="diagram-slot__caption">図：プラットフォーム別比較</p>
+      </div>
+
+      <div class="platform-grid">
+        <div class="platform-card platform-card--youtube">
+          <p class="platform-card__name">YouTube</p>
+          <p>流行りの動画であれば再生数が伸びやすかった。YouTubeで人気の人とのコラボはそれに比例して伸びた（12万回で全動画中最多）。ただし、最も維持率が高かったのは寸劇形式のひな祭りの動画だった。</p>
+        </div>
+        <div class="platform-card platform-card--instagram">
+          <p class="platform-card__name">Instagram</p>
+          <p>ビジュアルの加工が再生数を左右しやすかった。あるある系の共感、検証、料理と寸劇を組み合わせた動画は見られた（それぞれ3万〜5万回程度）が、企画ものは全く伸びず、離脱率も高かった（数千回程度）。</p>
+        </div>
+        <div class="platform-card platform-card--tiktok">
+          <p class="platform-card__name">TikTok</p>
+          <p>初期の5本に付与されるボーナスもあり、ひな祭りの動画が6万再生と伸び、維持率も高かった。ただし途中から規制がかかり、検証を続けられなくなった。子どもの顔をサムネイルに使っていたことが要因だと考えている。プラットフォームごとに児童保護の基準が異なることを、事後的に理解した。</p>
+        </div>
+      </div>
+
+      <h3 class="subhead">そこから何がわかったか</h3>
+      <p>こたみのチャンネルの独自性である寸劇・オチ・感情を動かす設計は、ただ流行っている動画で似たような企画をやるのと比べて新鮮味があり、見られやすいことがわかった。</p>
+      <p>流行りの企画は見られることは見られる。しかしコアなファンを作るという面では離脱率が高く、独自性がないためフォローもされにくい。ただ消費されるだけで終わってしまうため、長期的な親密度やつながりを考えると向いていないと実感した。</p>
+
+      <h3 class="subhead">メインチャンネルへの還元</h3>
+      <p>春頃の季語であった「学校」と「かくれんぼ」という企画に、恐怖寸劇という心を動かしやすい設計とオチを含む構成を組み合わせて撮影した。</p>
+
+      <div class="video-facade"
+           data-youtube-id="6upwCXQPnuA"
+           data-img-base="diagram-shorts"
+           data-title="学校かくれんぼショート">
+        <img class="video-facade__img" alt="メインチャンネルへの還元動画のプレースホルダ" hidden>
+        <div class="video-facade__fallback" hidden>
+          <p class="video-facade__fallback-title">こたみのチャンネル ショート動画</p>
+          <p class="video-facade__fallback-stat">444万回再生（2026年9月9日現在）</p>
+        </div>
+        <button class="video-facade__play" type="button" aria-label="メインチャンネルへの還元動画を再生する">再生する</button>
+      </div>
+      <p class="video-caption">444万回再生（2026年9月9日現在）。こたみのチャンネルで投稿してきたショート動画の中でも、トップクラスの再生数となった。</p>
+    </div>
+  </section>
+
+  <!-- ============ 3. 起業体験プログラム（必須／原稿記入待ち） ============ -->
+  <section class="section" id="section-3" aria-labelledby="s4-heading">
+    <div class="section__head">
+      <span class="section__num" aria-hidden="true">3</span>
+      <div>
+        <h2 class="section__title" id="s4-heading">起業体験プログラム（StartUpBase U18）</h2>
+        <p class="section__lead">公立はこだて未来大学主催</p>
+      </div>
+    </div>
+
+    <div class="section__body">
+      <!-- 梶原みゆ氏の「写真＋説明」の組み方を導入部に採用。人物は写っていない。 -->
+      <div class="intro">
+        <div class="diagram-slot intro__photo" data-diagram="section3-notes">
+          <img alt="StartupBase U18でのアイデア出しのメモ" hidden>
+        </div>
+        <div class="intro__text">
+          <p>二日間で初めて会う人たちと模擬会社を設立し収益化モデルまで提案する起業体験プログラム。</p>
+        </div>
+      </div>
+
+      <!-- 受賞は既に確定している事実のため、再生数と同じ「大数字」の視覚言語で先に提示する -->
+      <div class="award">
+        <span class="award__badge">最優秀賞</span>
+        <span class="award__badge">オーディエンス賞</span>
+      </div>
+
+      <div class="stage">
+        <p class="stage__label">狙い</p>
+        <p>自身もかつて不登校で、将来が見えず、不安から前へ進めなかった。同じように悩む人を救いたいという思いに加えて、N高で活動を重ねてきた自分の力が実際の起業家の前でどこまで通用するのか確かめたいという思いもあり、沖縄から北海道での挑戦に踏み出した。</p>
+      </div>
+      <div class="stage">
+        <p class="stage__label">打ち手</p>
+        <p>提案したのは、不登校の若者と高齢化が進む地方をつなぐマッチングサービス。発案からチームのリーダーとして、リサーチ、資料作成、マネタイズ設計、ヒアリング、プレゼンテーションまでを担当した。</p>
+      </div>
+
+      <!-- 他の参加者にはモザイク処理済み -->
+      <div class="diagram-slot" data-diagram="section4-presenting">
+        <img alt="StartupBase U18でチームでアイデアをまとめている様子" hidden>
+        <p class="diagram-slot__caption">チームでアイデアをまとめている様子</p>
+      </div>
+
+      <div class="stage stage--reaction">
+        <p class="stage__label">反応</p>
+        <p>結果は最優秀賞・オーディエンス賞のダブル受賞。この活動は函館新聞にも掲載された。</p>
+        <!-- 新聞記事の文言・紙面写真は権利未確認のため掲載しない（CLAUDE.mdの著作権ルールに基づく）。
+             掲載可能な引用文（カギカッコ＋日付）が用意でき次第、この一文の後に追加する。 -->
+      </div>
+
+      <!-- 他の受賞者にはモザイク処理済み -->
+      <div class="diagram-slot" data-diagram="section4-award">
+        <img alt="最優秀賞の表彰の様子" hidden>
+        <p class="diagram-slot__caption">最優秀賞・オーディエンス賞の表彰</p>
+      </div>
+
+      <div class="stage stage--insight">
+        <p class="stage__label">学び</p>
+        <p>校内で発表する時とは異なり、ビジネスの最前線で活動する方々へのプレゼンテーションでは、事業の実現可能性や収益性を問う鋭い質問が多く、これまでにない緊張感があった。しかし、そこで得た指摘や助言を基に企画をブラッシュアップしたことで、これまでよりも実現可能性の高い提案へと発展させることができた。この経験から、実社会に近い環境で挑戦し、専門的な視点から評価を受けながら改善を重ねることの重要性を学んだ。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4. 学校での活動＋地方での制作 ============
+       原稿到着済み。slide-01.png〜slide-06.png（存在するものだけ）は
+       diagram-slot の仕組みでそのまま差し込める（現時点では画像未着のため未使用）。 -->
+  <section class="section" id="section-4" aria-labelledby="s5-heading">
+    <div class="section__head">
+      <span class="section__num" aria-hidden="true">4</span>
+      <div>
+        <h2 class="section__title" id="s5-heading">学校での活動＋地方での制作</h2>
+      </div>
+    </div>
+    <div class="section__body">
+      <!-- 梶原みゆ氏の「写真＋説明」の組み方を導入部に採用。他の参加者にはモザイク処理済み。 -->
+      <div class="intro">
+        <div class="diagram-slot intro__photo" data-diagram="section4-mountain">
+          <img alt="地方での制作中、展望台からの眺め" hidden>
+        </div>
+        <div class="intro__text">
+          <p>課題解決型学習「プロジェクトN」と、伊予市・厚沢部町での映像制作</p>
+        </div>
+      </div>
+
+      <span class="tag">共同制作</span>
+      <div class="stage">
+        <p class="stage__label">狙い</p>
+        <p>学校や企業から出題されるテーマに合わせて課題解決のアイディアやサービスを考えプレゼンし、実現可能性、独自性で評価される課題解決型学習「プロジェクトN」。扱ったテーマは、身近な公共施設の課題解決、高校生のヘルスケアアイディア、無印良品のお米「プリンセスサリー」のマーケティングの3つ。</p>
+      </div>
+      <div class="stage">
+        <p class="stage__label">打ち手</p>
+        <p>プレゼンでは、冒頭に質問や意外性、聞き手にとって身近な話を入れて興味を引く構成にし、スライドは文字を減らして伝えたいことをはっきりさせる設計にした。</p>
+
+        <div class="diagram-slot" data-diagram="slide-02">
+          <img alt="「運動が好きなのに、どうして運動をしないの？」という問いかけで始まるスライド" hidden>
+          <p class="diagram-slot__caption">初手で引きを作るスライドの例</p>
+        </div>
+        <div class="diagram-slot" data-diagram="slide-03">
+          <img alt="運動を促すアプリのアイディアスライド" hidden>
+          <p class="diagram-slot__caption">高校生のヘルスケアの例<span class="diagram-slot__note">（デュオリンゴのオマージュ）</span></p>
+        </div>
+
+        <p>地方での制作では、伊予市で観光客・移住者を増やしたいというテーマから、移住を考えやすい層をターゲットに、流行を取り入れた動画を制作した。厚沢部町では、町の魅力を最大限伝える映像を子どもたちと制作。一番いい作品を作りたい、感動させる方向性で作りたいと班で目標を立て、企画や撮りたい箇所の決定は子どもたちが主体となって進めた。</p>
+      </div>
+      <div class="stage stage--reaction">
+        <p class="stage__label">反応</p>
+        <p>生徒からのプレゼン評価は、満点をいただくこともあった。</p>
+      </div>
+      <div class="stage stage--insight">
+        <p class="stage__label">学び</p>
+        <p>伊予市では、市の公式アカウントから地域の魅力を発信する難しさを学んだ。厚沢部町では、子どもたちとチームメイトのやりたいことをまとめ、一つの作品として形にする難しさを経験した。また、子どもから年配の方まで、幅広い世代が面白いと感じ、感動できる作品を考えることにも苦労した。制作側の思いと受け手が求めるものの双方を考えながら作品を完成させる大変さを学ぶとともに、大きな達成感を味わった。</p>
+      </div>
+
+      <div class="diagram-slot" data-diagram="slide-04">
+        <img alt="伊予市での映像制作の様子" hidden>
+        <p class="diagram-slot__caption">伊予市での制作の様子</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5. 締め — 今後の展望 ============
+       CLAUDE.mdの指示により、最も分量が少なく静かなセクションにする。
+       装飾なし・4段構成なし。見出しは「武蔵大学への接続」から「今後の展望」に変更
+       （志望動機の宣言色を弱め、自分の展望として読める framing に寄せた）。 -->
+  <section class="section" id="section-5" aria-labelledby="s6-heading">
+    <div class="section__head">
+      <span class="section__num" aria-hidden="true">5</span>
+      <h2 class="section__title" id="s6-heading">今後の展望</h2>
+    </div>
+    <div class="section__body">
+      <p>これまで大勢の人前に立ち、影響を与える仕事に携わり、たくさんの人に会ってきた。メディアは良い意味で他者に影響を与えうるが、もちろん悪い意味でも人に影響を与えてしまうことがある。現代のメディアの仕組みでは、そこから抜け出すことは容易ではない。</p>
+      <p>だからこそ、これまで影響を与える側だった自身の学びと、貴学での「影響を受ける側」や様々な発信者の視点を組み合わせ、これからのメディアのあり方を検討し、人がメディアを適切に扱っていける世の中を実現していきたい。</p>
+    </div>
+  </section>
+
+  <!-- ============ 6. 参考にしたポートフォリオ（本人記入待ち） ============ -->
+  <section class="section" id="section-6" aria-labelledby="s7-heading">
+    <div class="section__head">
+      <span class="section__num" aria-hidden="true">6</span>
+      <h2 class="section__title" id="s7-heading">参考にしたポートフォリオ</h2>
+    </div>
+    <div class="section__body">
+      <dl class="reference-card">
+        <dt>作品名／制作者</dt>
+        <dd>ポートフォリオ／梶原みゆ</dd>
+        <dt>URL</dt>
+        <dd><a href="https://www.behance.net/gallery/161904945/_" target="_blank" rel="noopener noreferrer">behance.net/gallery/161904945</a></dd>
+        <dt>参考にした点</dt>
+        <dd>各作品を「番号＋タイトル＋代表写真」の型で開く構成と、工程を丸でつないだ図解を、構成の面で参考にした。アバウトミーの書き方も参考にした。</dd>
+      </dl>
+      <dl class="reference-card">
+        <dt>作品名／制作者</dt>
+        <dd>ポートフォリオ「星屑の町」／王心宸</dd>
+        <dt>URL</dt>
+        <dd><a href="https://www.behance.net/gallery/211551865/_" target="_blank" rel="noopener noreferrer">behance.net/gallery/211551865</a></dd>
+        <dt>参考にした点</dt>
+        <dd>本編に入る前に全作品を俯瞰できる目次ページを置く構成を参考にした。写真と説明の構成も参考にした。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ AIの活用について ============
+       評価基準3「その工夫を本人が説明・解説できること」に対応する透明性の
+       開示。番号付き作品セクションと区別するため大きなナンバーは付けない。 -->
+  <section class="ai-note" aria-labelledby="ai-note-heading">
+    <div class="ai-note__inner">
+      <p class="about__eyebrow" id="ai-note-heading">AIの活用について</p>
+      <p>このポートフォリオはAIを使用して作りました。私自身は構成や文章を考え、AI（Claude）にデザインの指示を出し、実装を任せました。AIは、自分の考えを整理したり、決めた構成を実際のWebサイトの形に落とし込んだりするための構造化ツールとして活用しています。</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>© 岡田琥太郎</p>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

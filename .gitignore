@@ -1,0 +1,4 @@
+# 元画像・作業ファイルは公開物に含めない（CLAUDE.mdの方針）
+_source/
+dist/
+.DS_Store

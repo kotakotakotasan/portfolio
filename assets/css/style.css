@@ -1,0 +1,877 @@
+/*
+  設計トークン。
+  色は5色に固定：paper(地) / ink(文字) / night(狙い・打ち手/構造色) / alert(反応のピーク・注意喚起) / insight(知見)。
+  night→alertへの推移は、本人の演出手法である「感情の起伏（安心→上昇→恐怖→驚き）」を
+  サイト自体の構造色として転用したもの。単なる罫線装飾ではなく、二次選考の面接で
+  「なぜこの配色か」に一言で答えられるようにするための判断。
+*/
+:root {
+  --paper: #f1f2ee;
+  --ink: #15181f;
+  --ink-soft: #52555e;
+  --night: #2c3a63;
+  --night-wash: #e6e9f1;
+  --alert: #c1442c;
+  --alert-wash: #f6e5e0;
+  --insight: #3f7358;
+  --insight-wash: #e3ede7;
+  --border: #d9dad4;
+  --radius: 3px;
+  --content-width: 44rem;
+  --wide-width: 64rem;
+
+  /*
+    フォントはWebフォントを同梱せず、OSのシステムフォントのみを使う。
+    理由：二次選考は大学貸出のWindows PCで発表するため、フォントファイルの
+    読み込み失敗や文字化けのリスクをゼロにしたい。日本語Webフォントは数MB級で
+    パフォーマンス要件（フリーズ禁止）とも衝突する。差別化はファミリーを増やす
+    のではなく、同じファミリー内のウェイト・サイズのコントラストで作る。
+  */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Yu Gothic UI", "Yu Gothic",
+    YuGothic, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo,
+    "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--paper);
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--night);
+}
+
+a:not(.btn) {
+  text-underline-offset: 0.15em;
+}
+
+/* キーボードフォーカスを常に可視に保つ */
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--night);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.container {
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+.container--wide {
+  max-width: var(--wide-width);
+}
+
+/* ==================== サイトヘッダー ==================== */
+.site-header {
+  padding: 1.5rem;
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.site-header__author {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* ==================== 0 / 1. 問い（唯一の大胆要素） ====================
+   大胆さを1箇所に集中させるという設計原則により、このセクションだけ
+   中央配置・大型タイポグラフィにする。以降のセクションはすべて左揃えの
+   静かなレポート調に戻し、対比で問いの記憶定着を作る。
+*/
+.hero {
+  padding: 6rem 1.5rem 5rem;
+  text-align: center;
+}
+
+.hero__eyebrow {
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  margin-bottom: 1.5rem;
+}
+
+.hero__question {
+  font-size: clamp(1.6rem, 4.4vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.6;
+  max-width: 28em;
+  margin-inline: auto;
+}
+
+.hero__question em {
+  font-style: normal;
+  color: var(--night);
+}
+
+.hero__lede {
+  max-width: 34em;
+  margin: 2.5rem auto 0;
+  text-align: left;
+  color: var(--ink-soft);
+}
+
+.hero__lede p + p {
+  margin-top: 1.2em;
+}
+
+/* ==================== アバウトミー ====================
+   作品セクションの大きなナンバー体系とは区別するため番号を付けない。
+   問い（唯一の大胆要素）と目次のあいだに挟む、控えめな導入ブロック。
+*/
+.about {
+  padding: 1rem 1.5rem 4rem;
+}
+
+.about__inner {
+  max-width: var(--content-width);
+  margin-inline: auto;
+  display: grid;
+  gap: 1.75rem;
+}
+
+@media (min-width: 640px) {
+  .about__inner {
+    grid-template-columns: 9rem 1fr;
+    align-items: start;
+  }
+}
+
+/* 写真が届いていない場合、diagram-slotの仕組みで.about__photoごと除去される。
+   その際に空の列を残さず1カラムに戻す（対応ブラウザのみ。未対応でも崩れはしない）。 */
+.about__inner:not(:has(.about__photo)) {
+  grid-template-columns: 1fr;
+}
+
+.about__photo {
+  aspect-ratio: 1 / 1;
+  background: var(--night-wash);
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.about .about__photo img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+}
+
+.about__photo-caption {
+  text-align: center;
+}
+
+.about__eyebrow {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  margin-bottom: 0.4em;
+}
+
+.about__name {
+  font-weight: 700;
+  font-size: 1.15rem;
+  margin-bottom: 1rem;
+}
+
+/* ==================== プロフィール一覧表 ====================
+   参考ポートフォリオ（梶原みゆ氏）のプロフィールページにあった
+   「ラベル｜内容」を横並びにして罫線で区切る一覧表を、色や書体は
+   使わず構造だけ再現。スキャンして読みやすくするための判断。 */
+.profile-table {
+  margin: 1.5rem 0 0;
+  border-top: 1px solid var(--border);
+}
+
+.profile-table__row {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 0.5rem 1.5rem;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+@media (max-width: 480px) {
+  .profile-table__row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.profile-table__row dt {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.profile-table__row dd {
+  margin: 0;
+}
+
+.profile-table__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.profile-table__list strong {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 0.2em;
+}
+
+/* ==================== 写真＋説明（梶原みゆ氏スタイル） ====================
+   参考ポートフォリオのプロフィールページと同じ「写真は左、説明は右」の
+   組み方を、作品セクションの導入部にも展開したもの。アバウトミーの
+   写真ブロックと同じ考え方だが、こちらは円形ではなく矩形の写真を使う。 */
+.intro {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 640px) {
+  .intro {
+    grid-template-columns: 18rem 1fr;
+    align-items: center;
+  }
+}
+
+.intro:not(:has(.intro__photo)) {
+  grid-template-columns: 1fr;
+}
+
+.diagram-slot.intro__photo {
+  aspect-ratio: 3 / 4;
+  background: var(--night-wash);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.diagram-slot.intro__photo img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+}
+
+@media (min-width: 640px) {
+  .intro:has(.intro__photo) .intro__text {
+    grid-column: 2;
+  }
+}
+
+/* ==================== 概要ページ（目次） ====================
+   参考にしたポートフォリオ2点はどちらも本編に入る前に全体像を俯瞰させる
+   ページを挟んでいた。今回は1枚の長いページになるため、二次選考のプレゼン
+   で「今からセクション4の話をします」と口頭操作できるようにする実用目的で
+   採用。装飾的な地図ではなく、機能に絞った番号付き一覧にとどめる。
+*/
+.overview {
+  padding: 3rem 1.5rem 5rem;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.overview__title {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.06em;
+  margin-bottom: 1.75rem;
+}
+
+.overview__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.25rem;
+}
+
+.overview__item a {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  gap: 1rem;
+  align-items: baseline;
+  padding: 0.85rem 0.5rem;
+  text-decoration: none;
+  color: var(--ink);
+  border-radius: var(--radius);
+}
+
+.overview__item a:hover,
+.overview__item a:focus-visible {
+  background: var(--night-wash);
+}
+
+.overview__num {
+  font-weight: 700;
+  color: var(--night);
+  font-variant-numeric: tabular-nums;
+}
+
+.overview__label {
+  font-weight: 600;
+}
+
+.overview__note {
+  display: block;
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-top: 0.2em;
+}
+
+/* ==================== セクション共通 ==================== */
+.section {
+  padding: 5rem 1.5rem;
+  scroll-margin-top: 2rem;
+}
+
+.section:nth-of-type(even) {
+  background: #ffffff;
+}
+
+.section__head {
+  max-width: var(--wide-width);
+  margin-inline: auto;
+  display: flex;
+  gap: 1.25rem;
+  align-items: baseline;
+  margin-bottom: 2.5rem;
+}
+
+/* 各作品/各章を「大きなナンバー」で開く型。参考ポートフォリオの
+   「番号+タイトル+代表画像」という開き方の型を構造だけ取り入れている。 */
+.section__num {
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  font-weight: 700;
+  color: var(--night);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.section__title {
+  font-size: clamp(1.25rem, 2.6vw, 1.7rem);
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.section__lead {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  margin-top: 0.4em;
+}
+
+.section__body {
+  max-width: var(--content-width);
+  margin-inline: auto;
+}
+
+.section__body--wide {
+  max-width: var(--wide-width);
+}
+
+.section__body > * + * {
+  margin-top: 1.75rem;
+}
+
+.subhead {
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-top: 3rem;
+}
+
+/* ==================== 統計の大数字 ====================
+   再生数・登録者数・受賞名を同じ視覚言語で見せることで「実績はすべて
+   同一システムで扱っている」という一貫性を作る。セクション4の受賞も
+   これと同じ部品を使う。
+*/
+.stat-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem 2.5rem;
+  padding: 1.5rem 0;
+}
+
+.stat__value {
+  display: block;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.stat__label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  margin-top: 0.35em;
+}
+
+/* ==================== 4段構成（狙い/打ち手/反応/知見） ====================
+   評価基準「分析・評論・社会的文脈を説明できる能力」に直接対応する部分。
+   知見(4段目)だけ全幅の色帯に拡大し、視覚的に最大化する。これは
+   content.mdの指示（知見が最重要・埋もれさせない）をそのまま設計に
+   落とした結果であり、装飾ではなく評価軸から逆算した判断。
+*/
+.stage {
+  padding: 1.25rem 0 1.25rem 1.25rem;
+  border-left: 4px solid var(--night);
+}
+
+.stage--reaction {
+  border-left-color: var(--alert);
+}
+
+.stage__label {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--night);
+  margin-bottom: 0.5em;
+}
+
+.stage--reaction .stage__label {
+  color: var(--alert);
+}
+
+.stage--insight {
+  border-left: none;
+  background: var(--insight-wash);
+  padding: 2rem 1.75rem;
+  margin-inline: calc(-1.75rem);
+  border-radius: var(--radius);
+}
+
+.stage--insight .stage__label {
+  color: var(--insight);
+  font-size: 0.9rem;
+}
+
+.stage--insight p {
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+@media (min-width: 640px) {
+  .stage--insight {
+    margin-inline: calc(-2.5rem);
+    padding: 2.25rem 2.5rem;
+  }
+}
+
+/* ==================== オマージュ明記（注意喚起） ==================== */
+.notice {
+  background: var(--alert-wash);
+  border-left: 4px solid var(--alert);
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+}
+
+.notice strong {
+  color: var(--alert);
+}
+
+/* ==================== 動画facade ====================
+   iframeを初期表示で読み込まない。静止画クリックで初めてiframeを生成する
+   ことで「フリーズしない」というパフォーマンス要件を満たす。プレース
+   ホルダはYouTubeサムネイルを使わず自作の構成図のみを使用（著作権対応）。
+   YouTube埋め込みが要件上の唯一の外部依存の例外。
+*/
+.video-facade {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--night);
+  border-radius: var(--radius);
+  overflow: hidden;
+  color: #fff;
+}
+
+.video-facade__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-facade__fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.5rem;
+  gap: 0.5rem;
+}
+
+.video-facade__fallback-title {
+  font-weight: 600;
+  max-width: 30em;
+}
+
+.video-facade__fallback-stat {
+  font-variant-numeric: tabular-nums;
+  color: #cfd5e6;
+  font-size: 0.9rem;
+}
+
+.video-facade__play {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0));
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 1.25rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.video-facade__play::before {
+  content: "▶";
+  display: inline-block;
+  margin-right: 0.5em;
+}
+
+.video-facade__play:hover {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.05));
+}
+
+.video-facade iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* 再生中の動画を明示的に止められるボタン。他の動画を再生した時も
+   このiframeはJS側で確実に破棄される（裏で音が鳴り続ける不具合の対策）。 */
+.video-facade__close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  z-index: 1;
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(21, 24, 31, 0.7);
+  color: #fff;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.video-facade__close:hover {
+  background: rgba(21, 24, 31, 0.9);
+}
+
+.video-caption {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-top: 0.6em;
+}
+
+/* ==================== 図版スロット ====================
+   画像が存在しない場合、ブロックごと出さず空きスペースを残さない。
+   （表示/削除の切り替えはJS側で行う） */
+.diagram-slot {
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.diagram-slot img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 420px;
+  margin-inline: auto;
+}
+
+.diagram-slot__caption {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-top: 0.6em;
+}
+
+/* オマージュ・パロディ元の明記（動画2のイカゲーム明記と同じ理由：
+   要項の「パロディやオマージュはその旨を明記する」規定への対応） */
+.diagram-slot__note {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  opacity: 0.85;
+  margin-left: 0.4em;
+}
+
+/* ==================== プラットフォーム比較 ==================== */
+.platform-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 720px) {
+  .platform-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.platform-card {
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+}
+
+.platform-card__name {
+  font-weight: 700;
+  margin-bottom: 0.5em;
+}
+
+/* プラットフォームごとに縁の色を変え、一目でどれの話か分かるようにする。
+   サイト全体の5色ルールとは別に、実在するプラットフォームを指す部分に
+   限定した例外的な配色（本人指定）。 */
+.platform-card--youtube {
+  border: 2px solid #ff0000;
+}
+
+.platform-card--instagram {
+  border: 2px solid transparent;
+  border-image: linear-gradient(135deg, #ff8fc0, #ffe9a8) 1;
+}
+
+.platform-card--tiktok {
+  border: 2px solid transparent;
+  border-image: linear-gradient(135deg, #ffb7c5, #000000) 1;
+}
+
+/* ==================== 工程図（仮説→実験→知見→還元） ====================
+   本人自身の演出手法（感情設計）を、そのままサイト構造の工程図に転用した
+   もの。装飾ではなく「自分でチャンネルを立ち上げて検証した経験」＝
+   仮説→実験→知見→本業への還元という完全なループを視覚化している。
+*/
+.loop {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  counter-reset: loop;
+}
+
+@media (min-width: 860px) {
+  .loop {
+    flex-direction: row;
+    align-items: stretch;
+  }
+}
+
+.loop__node {
+  flex: 1;
+  position: relative;
+  padding: 1.5rem 1.25rem;
+  counter-increment: loop;
+}
+
+.loop__node::before {
+  content: counter(loop);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--night);
+  color: #fff;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 0.75rem;
+}
+
+.loop__node:last-child::before {
+  background: var(--insight);
+}
+
+.loop__node:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  background: var(--border);
+}
+
+@media (min-width: 860px) {
+  .loop__node:not(:last-child)::after {
+    top: 1.75rem;
+    right: -0.5rem;
+    width: 1rem;
+    height: 2px;
+  }
+}
+
+@media (max-width: 859px) {
+  .loop__node:not(:last-child)::after {
+    left: 1.5rem;
+    bottom: -0.5rem;
+    width: 2px;
+    height: 1rem;
+  }
+}
+
+.loop__label {
+  font-weight: 700;
+  margin-bottom: 0.4em;
+}
+
+.loop__text {
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+
+/* ==================== 記入待ちプレースホルダ ====================
+   本人の原稿が未着のセクション用。代筆せず、届く原稿の受け皿だけを
+   用意する（CLAUDE.mdの役割分担ルールに基づく）。
+*/
+.pending {
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.pending__title {
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 0.75em;
+}
+
+.pending ul {
+  margin: 0;
+  padding-left: 1.2em;
+}
+
+.pending li + li {
+  margin-top: 0.4em;
+}
+
+/* ==================== 受賞バッジ ==================== */
+.award {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.award__badge {
+  background: var(--insight);
+  color: #fff;
+  font-weight: 700;
+  padding: 0.6em 1em;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+}
+
+/* 受賞バッジと同じ見た目（緑地に白文字）の汎用タグ。
+   「共同制作」「課題解決型学習」など、性質を一言で示すラベルに使う。 */
+.tag {
+  display: inline-block;
+  background: var(--insight);
+  color: #fff;
+  font-weight: 700;
+  padding: 0.3em 0.75em;
+  border-radius: var(--radius);
+  font-size: 0.8rem;
+  margin-bottom: 0.75rem;
+}
+
+/* ==================== 参考ポートフォリオ ==================== */
+.reference-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  background: #fff;
+}
+
+.reference-card + .reference-card {
+  margin-top: 1rem;
+}
+
+.reference-card dt {
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  margin-top: 0.75em;
+}
+
+.reference-card dt:first-child {
+  margin-top: 0;
+}
+
+.reference-card dd {
+  margin: 0.2em 0 0;
+}
+
+/* ==================== AIの活用について ==================== */
+.ai-note {
+  padding: 3rem 1.5rem 4rem;
+  border-top: 1px solid var(--border);
+}
+
+.ai-note__inner {
+  max-width: var(--content-width);
+  margin-inline: auto;
+}
+
+.ai-note__inner p + p {
+  margin-top: 1rem;
+}
+
+/* ==================== フッター ==================== */
+.site-footer {
+  padding: 3rem 1.5rem 4rem;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+}
